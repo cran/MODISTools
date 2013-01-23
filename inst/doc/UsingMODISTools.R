@@ -80,7 +80,7 @@ c("250m_16_days_blue_reflectance", "250m_16_days_MIR_reflectance",
 ###################################################
 ### code chunk number 10: UsingMODISTools.Rnw:96-99 (eval = FALSE)
 ###################################################
-## MODISSubsets(LoadDat = modis.subset, Product = "MOD13Q1", 
+## MODISSubsets(LoadDat = modis.subset, Products = "MOD13Q1", 
 ##              Bands = c("250m_16_days_EVI", "250m_16_days_pixel_reliability"), 
 ##              Size = c(1,1))
 
@@ -88,8 +88,8 @@ c("250m_16_days_blue_reflectance", "250m_16_days_MIR_reflectance",
 ###################################################
 ### code chunk number 11: UsingMODISTools.Rnw:104-107 (eval = FALSE)
 ###################################################
-## subset.string <- read.csv(paste(list.files(pattern=".asc")[1], 
-##                                 header=FALSE, as.is=TRUE))
+## subset.string <- read.csv(paste(list.files(pattern = ".asc")[1], 
+##                                 header = FALSE, as.is = TRUE))
 ## subset.string[1, ]
 
 
@@ -119,7 +119,7 @@ subset.string[1, ]
 ###################################################
 ### code chunk number 14: UsingMODISTools.Rnw:134-138 (eval = FALSE)
 ###################################################
-## MODISSummaries(LoadDat = modis.subset, Product = "MOD13Q1", Band = "250m_16_days_EVI", 
+## MODISSummaries(LoadDat = modis.subset, Product = "MOD13Q1", Bands = "250m_16_days_EVI", 
 ##                ValidRange = c(-2000,10000), NoDataFill = -3000, ScaleFactor = 0.0001, 
 ##                QualityScreen = TRUE, QualityBand = "250m_16_days_pixel_reliability", 
 ##                QualityThreshold = 0)
@@ -128,7 +128,7 @@ subset.string[1, ]
 ###################################################
 ### code chunk number 15: UsingMODISTools.Rnw:144-146 (eval = FALSE)
 ###################################################
-## TileExample <- read.csv(list.files(pattern = "MODIS Data"))
+## TileExample <- read.csv(list.files(pattern = "MODIS_Data"))
 ## TileExample <- TileExample[ ,which(grepl("band.pixels", names(TileExample)))]
 
 
@@ -169,7 +169,7 @@ ExtractTile(Data = TileExample, Rows = c(9,2), Cols = c(9,2), Grid = TRUE)[ , ,1
 ###################################################
 ## LandCover(Band = "Land_Cover_Type_1")
 ## 
-## land.summary <- read.csv(list.files(pattern = "MODIS Land Cover Summary"))
+## land.summary <- read.csv(list.files(pattern = "MODIS_Land_Cover_Summary"))
 ## head(land.summary)
 
 
