@@ -1,4 +1,4 @@
-4bb347eb15778d86ea4dfacce5f5df10 *DESCRIPTION
+d2bb20fbb2ac9ccf5614821ac624d7ba *DESCRIPTION
 0c43b5c77095f5262273b2170e45424a *NAMESPACE
 74ce2f9ce20ee321901ebb13db3c5a36 *R/BatchDownload.R
 b31f07c33cb98c5af4b0d34327bf5c4e *R/ConvertToDD.R
@@ -11,11 +11,12 @@ c90fa72599346a90fd460855131e1e44 *R/GetProducts.R
 18dfd690f5143717b3eb14c77ab16814 *R/GetSubset.R
 6207291faefa2ac525f2b781e6b5d7f0 *R/LandCover.R
 7bb9e71ee352ef404d6fb311d2c358d8 *R/MODISSubsets.R
-6bad72b325501ad56bcf8b72e99288d1 *R/MODISSummaries.R
-fbc3eeb3678944dd0a981ecbbd716e21 *R/MODISTimeSeries.R
+f7f366cd7f2bbb516b67be9b650615f9 *R/MODISSummaries.R
+839d60a1e79a51fa7f3478fcce00e92e *R/MODISTimeSeries.R
 c68091662e9d650e80d963f96f35e4f3 *R/MODISTransects.R
 6a89f40cabc7dd5b829fd5f4234ee0a6 *R/QualityCheck.R
 3c5a8582c14d679011a2eed8a22d34d4 *R/UpdateSubsets.R
+7fb2f2e92f9df9426e01ccf04e96f233 *build/vignette.rds
 2cce6de89e30cb55b334ce482d5ac6a5 *data/ConvertExample.txt.gz
 1013472f650b687c3ec6cc429263216b *data/EndCoordinatesExample.txt.gz
 58dd69249d6f53631227a75e6e2658cb *data/FindIDExample.txt.gz
@@ -24,13 +25,13 @@ fe9f121a1b347a99472b82694cdbcfb3 *data/QualityCheckExample.txt.gz
 38c3eae4a41defcb454404f884f7339d *data/TransectExample.txt.gz
 0bf0624dda99db4cbd8997e09954609d *inst/doc/UsingMODISTools.R
 5a4565fc3d87f58245e7b7e5bd78b7a5 *inst/doc/UsingMODISTools.Rnw
-dc7fbc67439ecf7afc40d18394c599f9 *inst/doc/UsingMODISTools.pdf
+e0bf0b996541a75a6210a25deab9838f *inst/doc/UsingMODISTools.pdf
 08f03ea75d1447e1196f549540f04a61 *man/BatchDownload.Rd
 949eee788b1730e1471a3bd8c554193d *man/ConvertExample.Rd
 3f2f094e503c92a115dcd19c5d751e05 *man/ConvertToDD.Rd
 eda4676cbd0b88a9dbf790292d50b7e2 *man/EndCoordinates.Rd
 2a45748127f3d3b5c1a74d0badf0f868 *man/EndCoordinatesExample.Rd
-8f6683137bbf21d6bd59acb910c8730e *man/ExtractTile.Rd
+419905c13b4fd0123527da7ddead257f *man/ExtractTile.Rd
 2a42b1ad222f6f38e5dd3925a6a1c99c *man/FindID.Rd
 ccc7c4cf55fd8fea20c3fccccf7def29 *man/FindIDExample.rd
 74fad4564b3732c4c253f23b6959960a *man/GetBands.Rd
