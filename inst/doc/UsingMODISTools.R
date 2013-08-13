@@ -1,5 +1,5 @@
 ### R code from vignette source 'UsingMODISTools.Rnw'
-### Encoding: UTF-8
+### Encoding: ISO8859-1
 
 ###################################################
 ### code chunk number 1: UsingMODISTools.Rnw:25-36
@@ -41,23 +41,44 @@ modis.subset$end.date <- rep(2006, nrow(modis.subset))
 
 
 ###################################################
-### code chunk number 5: UsingMODISTools.Rnw:67-69
+### code chunk number 5: UsingMODISTools.Rnw:67-68 (eval = FALSE)
 ###################################################
-GetProducts()
-GetBands(Product = "MOD13Q1")
+## GetProducts()
 
 
 ###################################################
-### code chunk number 6: UsingMODISTools.Rnw:74-78
+### code chunk number 6: UsingMODISTools.Rnw:70-73
 ###################################################
-dates <- 
-  GetDates(Product = "MOD13Q1", Lat = modis.subset$lat[1], Long = modis.subset$long[1])
-min(dates)
-max(dates)
+c("MCD12Q1", "MCD12Q2", "MCD43A1", "MCD43A2", "MCD43A4", "MOD09A1",
+"MOD11A2", "MOD13Q1", "MOD15A2", "MOD15A2GFS", "MOD16A2", "MOD17A2_51",
+"MOD17A3", "MYD09A1", "MYD11A2", "MYD13Q1", "MYD15A2")
 
 
 ###################################################
-### code chunk number 7: UsingMODISTools.Rnw:84-87 (eval = FALSE)
+### code chunk number 7: UsingMODISTools.Rnw:75-76 (eval = FALSE)
+###################################################
+## GetBands(Product = "MOD13Q1")
+
+
+###################################################
+### code chunk number 8: UsingMODISTools.Rnw:78-84
+###################################################
+c("250m_16_days_blue_reflectance", "250m_16_days_MIR_reflectance",
+"250m_16_days_NIR_reflectance", "250m_16_days_pixel_reliability",
+"250m_16_days_red_reflectance", "250m_16_days_relative_azimuth_angle",
+"250m_16_days_sun_zenith_angle", "250m_16_days_view_zenith_angle",
+"250m_16_days_VI_Quality", "250m_16_days_NDVI",
+"250m_16_days_EVI", "250m_16_days_composite_day_of_the_year")
+
+
+###################################################
+### code chunk number 9: UsingMODISTools.Rnw:89-90 (eval = FALSE)
+###################################################
+## GetDates(Product = "MOD13Q1", Lat = modis.subset$lat[1], Long = modis.subset$long[1])
+
+
+###################################################
+### code chunk number 10: UsingMODISTools.Rnw:96-99 (eval = FALSE)
 ###################################################
 ## MODISSubsets(LoadDat = modis.subset, Product = "MOD13Q1", 
 ##              Bands = c("250m_16_days_EVI", "250m_16_days_pixel_reliability"), 
@@ -65,7 +86,7 @@ max(dates)
 
 
 ###################################################
-### code chunk number 8: UsingMODISTools.Rnw:92-95 (eval = FALSE)
+### code chunk number 11: UsingMODISTools.Rnw:104-107 (eval = FALSE)
 ###################################################
 ## subset.string <- read.csv(paste(list.files(pattern=".asc")[1], 
 ##                                 header=FALSE, as.is=TRUE))
@@ -73,7 +94,7 @@ max(dates)
 
 
 ###################################################
-### code chunk number 9: UsingMODISTools.Rnw:97-101
+### code chunk number 12: UsingMODISTools.Rnw:109-113
 ###################################################
 subset.string <- read.csv(paste("./MODISSubsetsMOD13Q1/", 
                                 list.files(path = "./MODISSubsetsMOD13Q1", pattern = ".asc")[1]
@@ -82,7 +103,7 @@ subset.string[1, ]
 
 
 ###################################################
-### code chunk number 10: UsingMODISTools.Rnw:107-116 (eval = FALSE)
+### code chunk number 13: UsingMODISTools.Rnw:119-128 (eval = FALSE)
 ###################################################
 ## names(modis.subset) <- c("start.lat", "start.long", "start.date", "end.date")
 ## EndCoordinates(LoadDat = modis.subset, Distance = 1000, Angle = 60, 
@@ -96,7 +117,7 @@ subset.string[1, ]
 
 
 ###################################################
-### code chunk number 11: UsingMODISTools.Rnw:122-126 (eval = FALSE)
+### code chunk number 14: UsingMODISTools.Rnw:134-138 (eval = FALSE)
 ###################################################
 ## MODISSummaries(LoadDat = modis.subset, Product = "MOD13Q1", Band = "250m_16_days_EVI", 
 ##                ValidRange = c(-2000,10000), NoDataFill = -3000, ScaleFactor = 0.0001, 
@@ -105,14 +126,14 @@ subset.string[1, ]
 
 
 ###################################################
-### code chunk number 12: UsingMODISTools.Rnw:132-134 (eval = FALSE)
+### code chunk number 15: UsingMODISTools.Rnw:144-146 (eval = FALSE)
 ###################################################
 ## TileExample <- read.csv(list.files(pattern = "MODIS Data"))
 ## TileExample <- TileExample[ ,which(grepl("band.pixels", names(TileExample)))]
 
 
 ###################################################
-### code chunk number 13: UsingMODISTools.Rnw:136-140
+### code chunk number 16: UsingMODISTools.Rnw:148-152
 ###################################################
 TileExample <- read.csv(paste("./MODISSummaries/", 
                               list.files(path = "./MODISSummaries/", 
@@ -121,7 +142,7 @@ TileExample <- TileExample[ ,which(grepl("band.pixels", names(TileExample)))]
 
 
 ###################################################
-### code chunk number 14: UsingMODISTools.Rnw:143-147
+### code chunk number 17: UsingMODISTools.Rnw:155-159
 ###################################################
 dim(TileExample)
 dim(ExtractTile(Data = TileExample, Rows = c(9,2), Cols = c(9,2), Grid = FALSE))
@@ -130,21 +151,21 @@ head(ExtractTile(Data = TileExample, Rows = c(9,2), Cols = c(9,2), Grid = FALSE)
 
 
 ###################################################
-### code chunk number 15: UsingMODISTools.Rnw:150-152
+### code chunk number 18: UsingMODISTools.Rnw:162-164
 ###################################################
 matrix(TileExample[1, ], nrow = 9, ncol = 9, byrow = TRUE)
 ExtractTile(Data = TileExample, Rows = c(9,2), Cols = c(9,2), Grid = TRUE)[ , ,1]
 
 
 ###################################################
-### code chunk number 16: UsingMODISTools.Rnw:158-160 (eval = FALSE)
+### code chunk number 19: UsingMODISTools.Rnw:170-172 (eval = FALSE)
 ###################################################
 ## MODISSubsets(LoadDat = modis.subset, Product = "MCD12Q1", Bands = "Land_Cover_Type_1", 
 ##              Size = c(1,1))
 
 
 ###################################################
-### code chunk number 17: UsingMODISTools.Rnw:163-167 (eval = FALSE)
+### code chunk number 20: UsingMODISTools.Rnw:175-179 (eval = FALSE)
 ###################################################
 ## LandCover(Band = "Land_Cover_Type_1")
 ## 
@@ -153,7 +174,7 @@ ExtractTile(Data = TileExample, Rows = c(9,2), Cols = c(9,2), Grid = TRUE)[ , ,1
 
 
 ###################################################
-### code chunk number 18: UsingMODISTools.Rnw:169-174
+### code chunk number 21: UsingMODISTools.Rnw:181-186
 ###################################################
 land.summary <- read.csv(paste("./LandCover/",
                                list.files(path = "./LandCover/",
