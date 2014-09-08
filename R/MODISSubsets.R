@@ -1,6 +1,9 @@
 MODISSubsets <-
 function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDate = FALSE, TimeSeriesLength = 0, Transect = FALSE)
 {
+    if(SaveDir == '.') cat('Files downloaded will be written to ', getwd(), '.\n', sep = '')
+    if(SaveDir != '.') cat('Files downloaded will be written to ', SaveDir, '.\n', sep = '')
+    
     # Load data of locations; external data file, or an R object.
     if(!is.object(LoadDat) & !is.character(LoadDat)) stop("LoadDat must be an object in R or a file path character string.")
     if(is.object(LoadDat)) dat <- data.frame(LoadDat) 
@@ -20,6 +23,9 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
       
     # Check for missing lat/long data
     if(any(is.na(dat$lat) != is.na(dat$long))) stop("There are locations with incomplete coordinates.")
+    
+    # Check to see if IDs have been given in data frame.
+    ID <- ifelse(any(names(dat) == "ID"), TRUE, FALSE)
     
     # Check that the input data set contains dates, named end.date.
     if(!any(names(dat) == "end.date")) stop("Dates for time series must be included and named 'end.date'.")
@@ -50,28 +56,29 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
       if(abs(TimeSeriesLength[1] - round(TimeSeriesLength[1])) > .Machine$double.eps^0.5){
         stop("TimeSeriesLength must be a positive integer.")
       }
-      if(TimeSeriesLength <= 0) stop("TimeSeriesLength must be a positive integer.")
+      if(TimeSeriesLength < 0) stop("TimeSeriesLength must be a positive integer.")
     }
     #####
     
+    # Remove any incomplete time series.
+    if(StartDate) dat <- dat[!is.na(dat$lat) | !is.na(dat$long) | !is.na(dat$end.date) | !is.na(dat$start.date), ]
+    if(!StartDate) dat <- dat[!is.na(dat$lat) | !is.na(dat$long) | !is.na(dat$end.date), ]
+    
     # Find all unique time-series wanted, for each unique location.
-    Start <- rep(StartDate, length(dat$lat[!is.na(dat$lat)]))
-    ifelse(Start,
-           lat.long <- unique(cbind(lat = dat$lat[!is.na(dat$lat)], long = dat$long[!is.na(dat$lat)],
-                                    end.date = dat$end.date[!is.na(dat$lat)], start.date = dat$start.date[!is.na(dat$lat)])), 
-           lat.long <- unique(cbind(lat = dat$lat[!is.na(dat$lat)], long = dat$long[!is.na(dat$lat)], 
-                                    end.date = dat$end.date[!is.na(dat$lat)])))
+    if(StartDate) lat.long <- dat[!duplicated(data.frame(dat$lat, dat$long, dat$end.date, dat$start.date)), ]
+    if(!StartDate) lat.long <- dat[!duplicated(data.frame(dat$lat, dat$long, dat$end.date)), ]
+    
     cat("Found", nrow(lat.long), "unique time-series to download.\n")
     
     ##### Year or posixt date format?
     Year <- FALSE
     POSIXt <- FALSE
     
-    char.compatible <- as.character(lat.long[ ,3])
-    if(!is.character(char.compatible) | all(is.na(char.compatible)) & any(nchar(char.compatible) != 4)) POSIXt <- TRUE
+    posix.compatible <- try(as.POSIXlt(lat.long$end.date), silent = TRUE)
     
-    posix.compatible <- try(as.POSIXlt(lat.long[ ,3]), silent = TRUE)
-    if(class(posix.compatible) == "try-error") Year <- TRUE
+    if(any(class(lat.long$end.date) == "POSIXt") | all(class(posix.compatible) != "try-error")) POSIXt <- TRUE
+    if(all(is.numeric(lat.long$end.date) & nchar(lat.long$end.date) == 4) & 
+         any(class(posix.compatible) == "try-error")) Year <- TRUE
     
     if(!Year & !POSIXt) stop("Date information in LoadDat is not recognised as years or as POSIXt format.")
     if(Year & POSIXt) stop("Date information in LoadDat is recognised as both year and POSIXt formats.")
@@ -79,15 +86,15 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
     # Take date information for each time-series, in 'year' or 'posixt', and turn them into MODIS date codes (Julian).
     if(Year){
       if(StartDate){
-        start.date <- strptime(paste(lat.long[ ,4], "-01-01", sep = ""), "%Y-%m-%d")
-        char.compatible <- as.character(lat.long[ ,4])
-        if(!is.character(char.compatible) | all(is.na(char.compatible))) stop("Year date format: start.date not all compatible.")
-        if(any(nchar(lat.long[ ,4]) != 4)) stop("start.date is not matching year format - dates should have 4 numeric characters.")
+        start.year.fail <- any(!is.numeric(lat.long$start.date) | nchar(lat.long$start.date) != 4)
+        if(start.year.fail) stop("end.date identified as year dates, but start.date does not match.")
+        
+        start.date <- strptime(paste(lat.long$start.date, "-01-01", sep = ""), "%Y-%m-%d")
       }
-      if(!StartDate) start.date <- strptime(paste(lat.long[ ,3] - TimeSeriesLength, "-01-01", sep = ""), "%Y-%m-%d")
+      if(!StartDate) start.date <- strptime(paste(lat.long$end.date - TimeSeriesLength, "-01-01", sep = ""), "%Y-%m-%d")
       
       # Put start and end dates in POSIXlt format.
-      end.date <- strptime(paste(lat.long[ ,3], "-12-31", sep = ""), "%Y-%m-%d")
+      end.date <- strptime(paste(lat.long$end.date, "-12-31", sep = ""), "%Y-%m-%d")
       start.day <- start.date$yday
       start.day[nchar(start.day) == 2] <- paste(0, start.day[nchar(start.day) == 2], sep = "")
       start.day[nchar(start.day) == 1] <- paste(0, 0, start.day[nchar(start.day) == 1], sep = "")
@@ -101,12 +108,13 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
     }
 
     if(POSIXt){
-      end.date <- strptime(lat.long[ ,3], "%Y-%m-%d")     
+      end.date <- strptime(lat.long$end.date, "%Y-%m-%d")     
       
       if(StartDate){
-        posix.compatible <- try(as.POSIXlt(lat.long[ ,4]), silent = TRUE)
-        if(class(posix.compatible) == "try-error") stop("POSIX date format detected, but start.date may not all be POSIXt format.")
-        start.date <- strptime(lat.long[ ,4], "%Y-%m-%d")
+        start.posix.fail <- any(class(try(as.POSIXlt(lat.long$end.date), silent = TRUE)) == "try-error")
+        if(start.posix.fail) stop("end.date identified as POSIXt dates, but start.date does not match.")
+        
+        start.date <- strptime(lat.long$start.date, "%Y-%m-%d")
       }
       if(!StartDate) start.date <- strptime(paste((end.date$year + 1900) - TimeSeriesLength, "-01-01", sep = ""), "%Y-%m-%d")
       
@@ -124,8 +132,22 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
     
     # Create IDs for each time series.
     fmt <- '%.5f'
-    ID <- paste("Lat", sprintf(fmt, lat.long[ ,1]), "Lon", sprintf(fmt, lat.long[ ,2]), "Start", start.date, "End", end.date, sep = "")
-    lat.long <- data.frame(SubsetID = ID, lat.long, Status = rep(NA, nrow(lat.long)))
+    if(ID){
+    	## Check that all author-given IDs will be unique for each unique time-series, and check that they won't cause issues with product information
+    	n.unique <- length(unique(lat.long$ID)) == nrow(lat.long)
+    	if(n.unique){
+    		if(any(grepl("___", lat.long$ID))) stop("IDs can not contain '___'")
+    		names(lat.long)[names(lat.long) == "ID"] <- "SubsetID"
+    		lat.long <- data.frame(lat.long, Status = rep(NA, nrow(lat.long)))
+    	} else {
+    		cat("Number of unique IDs does not match number of unique time series. Creating new ID field.")
+    		ID <- paste("Lat", sprintf(fmt, lat.long$lat), "Lon", sprintf(fmt, lat.long$long), "Start", start.date, "End", end.date, sep = "")
+    		lat.long <- data.frame(SubsetID = ID, lat.long, Status = rep(NA, nrow(lat.long)))
+    	}
+    } else {
+    	ID <- paste("Lat", sprintf(fmt, lat.long$lat), "Lon", sprintf(fmt, lat.long$long), "Start", start.date, "End", end.date, sep = "")
+    	lat.long <- data.frame(SubsetID = ID, lat.long, Status = rep(NA, nrow(lat.long)))
+    } 
     
     #####
     # If the Products input does not match any product codes in the list output from GetProducts(), stop with error.
@@ -144,7 +166,7 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
     }
     
     # Retrieve the list of date codes to be requested and organise them in batches of time series's of length 10.
-    dates <- lapply(Products, function(x) GetDates(lat.long[1,2], lat.long[1,3], x))
+    dates <- lapply(Products, function(x) GetDates(lat.long$lat[1], lat.long$long[1], x))
     
     # Check that time-series fall within date range of MODIS data.
     if(any((start.date$year + 1900) < 2000 & (end.date$year + 1900) < 2000)){
@@ -166,7 +188,7 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
                               Products = Products, Size = Size, StartDate = StartDate, Transect = Transect, SaveDir = SaveDir)
         
     # Run a second round of downloads for any time-series that incompletely downloaded, and overwrite originals.
-    success.check <- lat.long[ ,ncol(lat.long)] != "Successful download"
+    success.check <- lat.long$Status != "Successful download"
     if(any(success.check)){
       cat("Some subsets that were downloaded were incomplete. Retrying download again for these time-series...\n")
       
@@ -174,14 +196,18 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
                                                  MODIS.end = MODIS.end, Bands = Bands, Products = Products, Size = Size,
                                                  StartDate = StartDate, Transect = Transect, SaveDir = SaveDir)
       
-      success.check <- lat.long[ ,ncol(lat.long)] != "Successful download"
+      success.check <- lat.long$Status != "Successful download"
       if(any(success.check)) cat("Incomplete downloads were re-tried but incomplete downloads remain. See subset download file.\n")
     }
     #####
     
-    ##### Write a summary file with IDs and unique time-series information .
+    ##### Write a summary file with IDs and unique time-series information.
+    date <- as.POSIXlt(Sys.time())
+    file.date <- paste(as.Date(date),
+                       paste(paste0("h", date$hour), paste0("m", date$min), paste0("s", round(date$sec, digits=0)), sep = "-"),
+                       sep = "_")
     if(!Transect){
-      write.table(lat.long, file = paste(SaveDir, "/", "Subset Download ", Sys.Date(), ".csv", sep = ""), 
+      write.table(lat.long, file = file.path(SaveDir, paste("SubsetDownload_", file.date, ".csv", sep = "")), 
                   col.names = TRUE, row.names = FALSE, sep = ",")
     }
     if(Transect){
@@ -189,11 +215,11 @@ function(LoadDat, FileSep = NULL, Products, Bands, Size, SaveDir = ".", StartDat
       w.transect <- regexpr("Point", dat$ID[1])
       transect.id <- substr(dat$ID[1], 1, w.transect - 1)
       
-      if(!any(DirList == paste(SaveDir, "/", transect.id, "_Subset Download ", Sys.Date(), ".csv", sep = ""))){ 
-        write.table(lat.long, file = paste(SaveDir, "/", transect.id, "_Subset Download ", Sys.Date(), ".csv", sep = ""), 
+      if(!any(DirList == file.path(SaveDir, paste(transect.id, "_SubsetDownload_", file.date, ".csv", sep = "")))){ 
+        write.table(lat.long, file = file.path(SaveDir, paste(transect.id, "_SubsetDownload_", file.date, ".csv", sep = "")), 
                     col.names = TRUE, row.names = FALSE, sep = ",")
       } else {
-        write.table(lat.long, file = paste(SaveDir, "/", transect.id, "_Subset Download ", Sys.Date(), ".csv", sep = ""), 
+        write.table(lat.long, file = file.path(SaveDir, paste(transect.id, "_SubsetDownload_", file.date, ".csv", sep = "")), 
                     col.names = FALSE, row.names = FALSE, sep = ",", append = TRUE)
       }
     }
