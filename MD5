@@ -1,4 +1,4 @@
-81f44a4b57fad2f762bd21d0378ee251 *DESCRIPTION
+a7d946967b7b25d8a9961de520d6aaf2 *DESCRIPTION
 5f6018983e3fb246880f2a3fd9b90d62 *NAMESPACE
 6f1451cc27012edf6c4b25b1e21c770e *R/BatchDownload.R
 aadb6850cedd84a094f0e04aa6fd70f9 *R/ConvertToDD.R
@@ -25,10 +25,10 @@ eb7889b46e39b28f5230fb0585eb4757 *data/FindIDExample.txt.gz
 cf83278f0878813734dc53159f5c696d *data/QualityCheckExample.txt.gz
 04fe2b7ed60f7badc4b6beb2e1692a38 *data/SubsetExample.txt.gz
 81fd4ca5dfca9708588f3e2b72450e4d *data/TransectExample.txt.gz
-a119623ca6e7586fdb650d5bb1849998 *inst/CITATION
+88e8e6e8ec54b4b28baa4ef4deb4d32b *inst/CITATION
 23981df45583e53a25e1a6edf6334c6e *inst/doc/UsingMODISTools.R
 2c75594132e3fd775e73e2239414a486 *inst/doc/UsingMODISTools.Rnw
-c1d55ecbd46c4d5dc81a45c8a046de31 *inst/doc/UsingMODISTools.pdf
+57bbb11dc729cb5e2b0d3392471c3780 *inst/doc/UsingMODISTools.pdf
 635f43a76e946bf82d716fa5f1fec865 *man/BatchDownload.Rd
 b3ffcd7a0433aa04d83244bd15665e17 *man/ConvertExample.Rd
 a38aa70f7738de01819af1c4fe37b72e *man/ConvertToDD.Rd
@@ -54,7 +54,7 @@ f2f6dcf0c1db6791f62582f9c2f3a77b *man/SubsetExample.Rd
 2f318e2408746966faf9985e0d74b10c *man/TransectExample.Rd
 ec1cffa3e293eca356a77facd3c87dd5 *man/UpdateSubsets.Rd
 0ec0efa9393fc28ba7b3a2c5bb4e6190 *man/WritePRJ.Rd
-76605d79c35a3b7ecadb66aa41292ba1 *tests/Test.R
+dad09d98a26436baa89e4fbffcf051e7 *tests/Test.R
 b4ad9644e1c7291678a4abbe470ba4e4 *vignettes/LandCover/LandCoverSummary.csv
 1fcee3c8723fe7ded7fbcfe8c5f21ff2 *vignettes/MODISSubsetsMCD12Q1/1_MCD12Q1.asc
 19139b7f75c48f05aa779c1721996b27 *vignettes/MODISSubsetsMCD12Q1/2_MCD12Q1.asc
