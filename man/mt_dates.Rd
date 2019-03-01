@@ -4,7 +4,7 @@
 \alias{mt_dates}
 \title{Download all available dates}
 \usage{
-mt_dates(product = NULL, lat = NULL, lon = NULL, site_id = NULL)
+mt_dates(product, lat, lon, site_id)
 }
 \arguments{
 \item{product}{a valid MODIS product name}
@@ -28,8 +28,12 @@ at a particular location.
 \donttest{
 # list all available MODIS Land Products Subsets products
 bands <- mt_dates(product = "MOD11A2", lat = 40, lon = -110)
-print(bands)
+head(bands)
 }
+}
+\seealso{
+\code{\link[MODISTools]{mt_products}}
+\code{\link[MODISTools]{mt_sites}} \code{\link[MODISTools]{mt_bands}}
 }
 \keyword{Land}
 \keyword{MODIS}

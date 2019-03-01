@@ -4,17 +4,19 @@
 \alias{mt_batch_subset}
 \title{Batch download MODIS Land Products subsets}
 \usage{
-mt_batch_subset(df = NULL, product = NULL, band = NULL,
-  start = "2000-01-01", end = format(Sys.time(), "\%Y-\%m-\%d"),
-  km_lr = 0, km_ab = 0, out_dir = tempdir(), internal = TRUE,
-  ncores = "auto")
+mt_batch_subset(df, product, band, start = "2000-01-01",
+  end = format(Sys.time(), "\%Y-\%m-\%d"), km_lr = 0, km_ab = 0,
+  out_dir = tempdir(), internal = TRUE, ncores = "auto")
 }
 \arguments{
-\item{df}{a file holding locations and their sitenames to batch process}
+\item{df}{a CSV file or data frame holding locations and their sitenames to
+batch process with column names site_name, lat, lon holding the respective
+sitenames, latitude and longitude. When providing a CSV make sure that the
+data are comma separated.}
 
 \item{product}{a valid MODIS product name}
 
-\item{band}{band to download (default = \code{NULL}, all bands)}
+\item{band}{band to download}
 
 \item{start}{start date}
 
@@ -33,8 +35,9 @@ mt_batch_subset(df = NULL, product = NULL, band = NULL,
 (auto will select the all cpu cores - 1)}
 }
 \value{
-A nested list containing the downloaded data and a descriptive
-header with meta-data.
+A data frame combining meta-data and actual data values, data from
+different sites is concatenated into one large dataframe. Subsets can be
+created by searching on sitename.
 }
 \description{
 Lists all available dates for a MODIS Land Products Subset product
@@ -57,12 +60,16 @@ subsets <- mt_batch_subset(df = df,
                         band = "LST_Day_1km",
                         internal = TRUE,
                         start = "2004-01-01",
-                        end = "2004-03-31",
-                        out_dir = "~")
+                        end = "2004-03-31")
 
-print(str(subsets))
-
+head(subsets)
 }
+}
+\seealso{
+\code{\link[MODISTools]{mt_sites}}
+\code{\link[MODISTools]{mt_dates}} \code{\link[MODISTools]{mt_bands}}
+\code{\link[MODISTools]{mt_products}}
+\code{\link[MODISTools]{mt_subset}}
 }
 \keyword{Land}
 \keyword{MODIS}

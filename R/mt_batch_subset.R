@@ -3,9 +3,12 @@
 #' Lists all available dates for a MODIS Land Products Subset product
 #' at a particular location.
 #'
-#' @param df a file holding locations and their sitenames to batch process
+#' @param df a CSV file or data frame holding locations and their sitenames to
+#' batch process with column names site_name, lat, lon holding the respective
+#' sitenames, latitude and longitude. When providing a CSV make sure that the
+#' data are comma separated.
 #' @param product a valid MODIS product name
-#' @param band band to download (default = \code{NULL}, all bands)
+#' @param band band to download
 #' @param start start date
 #' @param end end date
 #' @param km_lr km left-right to sample
@@ -15,9 +18,14 @@
 #' (auto will select the all cpu cores - 1)
 #' @param internal should the data be returned as an internal data structure
 #' \code{TRUE} or \code{FALSE} (default = \code{TRUE})
-#' @return A nested list containing the downloaded data and a descriptive
-#' header with meta-data.
+#' @return A data frame combining meta-data and actual data values, data from
+#' different sites is concatenated into one large dataframe. Subsets can be
+#' created by searching on sitename.
 #' @keywords MODIS Land Products Subsets, products, meta-data
+#' @seealso \code{\link[MODISTools]{mt_sites}}
+#' \code{\link[MODISTools]{mt_dates}} \code{\link[MODISTools]{mt_bands}}
+#' \code{\link[MODISTools]{mt_products}}
+#' \code{\link[MODISTools]{mt_subset}}
 #' @export
 #' @examples
 #'
@@ -36,58 +44,72 @@
 #'                         band = "LST_Day_1km",
 #'                         internal = TRUE,
 #'                         start = "2004-01-01",
-#'                         end = "2004-03-31",
-#'                         out_dir = "~")
+#'                         end = "2004-03-31")
 #'
-#' print(str(subsets))
-#'
+#' head(subsets)
 #'}
 
-mt_batch_subset <- function(df = NULL,
-                         product = NULL,
-                         band = NULL,
-                         start = "2000-01-01",
-                         end = format(Sys.time(),"%Y-%m-%d"),
-                         km_lr = 0,
-                         km_ab = 0,
-                         out_dir = tempdir(),
-                         internal = TRUE,
-                         ncores = "auto"){
+mt_batch_subset <- function(
+  df,
+  product,
+  band,
+  start = "2000-01-01",
+  end = format(Sys.time(),"%Y-%m-%d"),
+  km_lr = 0,
+  km_ab = 0,
+  out_dir = tempdir(),
+  internal = TRUE,
+  ncores = "auto"
+  ){
+
   # error trap
-  if (is.null(df)){
+  if (missing(df)){
     stop("please specify a batch file...")
-  }
-
-  # load all products
-  products <- MODISTools::mt_products()$product
-
-  # error trap
-  if (is.null(product) | !(product %in% products) ){
-    stop("please specify a product, or check your product name...")
   }
 
   # check data frame
   if (!is.data.frame(df)){
     if(file.exists(df)){
-      df = utils::read.table(df,
-                      header = TRUE,
-                      sep = ",",
-                      stringsAsFactors = FALSE)
+      df <- utils::read.table(df,
+                              header = TRUE,
+                              sep = ",",
+                              stringsAsFactors = FALSE)
     } else {
-     stop("specified batch file does not exist")
+      stop("specified batch file does not exist")
     }
   }
 
-  # construct the data frame over which we will
+  # load products
+  products <- MODISTools::mt_products()$product
+
+  # error trap products
+  if (missing(product) | !(product %in% products) ){
+    stop("please specify a product, or check your product name...")
+  }
+
+  # load bands for product
+  bands <- mt_bands(product)
+
+  # error trap band
+  if (missing(band) | !(band %in% bands$band) ){
+    stop("please specify a band, or check your product band combination ...")
+  }
+
+  # If all tests pass construct the data frame over which we will
   # loop to process all the data
   df$product <- product
-  df$band <- ifelse(is.null(band),"",band)
+  df$band <- band
   df$start <- start
   df$end <- end
   df$km_lr <- km_lr
   df$km_ab <- km_ab
   df$out_dir <- path.expand(out_dir)
   df$internal <- internal
+
+  # convert names tolower case
+  # trapping naming issues of coordinates
+  # and sites
+  names(df) <- tolower(names(df))
 
   # Calculate the number of cores
   if (ncores == "auto"){
@@ -102,18 +124,21 @@ mt_batch_subset <- function(df = NULL,
   # Initiate cluster
   cl <- parallel::makeCluster(ncores)
 
+  # paralllel loop (if requested)
   output <- parallel::parRapply(cl, df, function(x){
-    MODISTools::mt_subset(site_name = as.character(x['site_name']),
-                           product = as.character(x['product']),
-                           band = as.character(x['band']),
-                           lat = as.numeric(x['lat']),
-                           lon = as.numeric(x['lon']),
-                           km_lr = as.numeric(x['km_lr']),
-                           km_ab = as.numeric(x['km_ab']),
-                           start = as.character(x['start']),
-                           end = as.character(x['end']),
-                           out_dir = x['out_dir'],
-                           internal = x['internal'])
+    MODISTools::mt_subset(
+      site_name = as.character(x['site_name']),
+      product = as.character(x['product']),
+      band = as.character(x['band']),
+      lat = as.numeric(x['lat']),
+      lon = as.numeric(x['lon']),
+      km_lr = as.numeric(x['km_lr']),
+      km_ab = as.numeric(x['km_ab']),
+      start = as.character(x['start']),
+      end = as.character(x['end']),
+      out_dir = x['out_dir'],
+      internal = x['internal'],
+      progress = FALSE)
   })
 
   # stop cluster
@@ -121,13 +146,12 @@ mt_batch_subset <- function(df = NULL,
 
   # return data
   if(internal){
-
-    # add site names to list
-    names(output) <- df$site_name
+    # row bind the nested list output
+    output <- do.call("rbind", output)
 
     return(output)
   } else {
-    invisible(NULL)
+    invisible()
   }
 }
 

@@ -5,7 +5,10 @@
 #' @return A data frame of all available MODIS Land Products Subsets
 #' pre-processed sites
 #' @keywords MODIS Land Products Subsets, products, meta-data
+#' @seealso \code{\link[MODISTools]{mt_products}}
+#' \code{\link[MODISTools]{mt_bands}} \code{\link[MODISTools]{mt_dates}}
 #' @export
+#' @importFrom memoise memoise
 #' @examples
 #'
 #' \donttest{
@@ -13,14 +16,12 @@
 #' sites <- mt_sites()
 #' print(head(sites))
 #'}
+#'
 
-mt_sites <- function(){
+mt_sites <- memoise::memoise(function(){
 
-  # define server settings (main server should become global
-  # as in not specified in every function)
-  server <- "https://modis.ornl.gov/rst/"
-  end_point <- "api/v1/sites"
-  url <- paste0(server,end_point)
+  # define server settings
+  url <- paste(mt_server(), "sites", sep = "/")
 
   # try to download the data
   sites <- try(jsonlite::fromJSON(url))
@@ -32,4 +33,4 @@ mt_sites <- function(){
 
   # return a data frame with all products and their details
   return(sites$sites)
-}
+})

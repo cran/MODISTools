@@ -13,40 +13,28 @@ products <- mt_products()
 head(products)
 
 ## ----eval = TRUE---------------------------------------------------------
-bands <- mt_bands(product = "MOD11A2")
+bands <- mt_bands(product = "MOD13Q1")
 head(bands)
 
 ## ----eval = TRUE---------------------------------------------------------
-dates <- mt_dates(product = "MOD11A2", lat = 42, lon = -110)
+dates <- mt_dates(product = "MOD13Q1", lat = 42, lon = -110)
 head(dates)
 
 ## ----eval = TRUE---------------------------------------------------------
 # download data
-subset <- mt_subset(product = "MOD11A2",
-                    lat = 40,
-                    lon = -110,
-                    band = "LST_Day_1km",
+subset <- mt_subset(product = "MOD13Q1",
+                    lat = 42.534171,
+                    lon = -72.179003,
+                    band = "250m_16_days_NDVI",
                     start = "2004-01-01",
-                    end = "2004-06-01",
+                    end = "2005-12-30",
                     km_lr = 0,
                     km_ab = 0,
                     site_name = "testsite",
-                    internal = TRUE)
+                    internal = TRUE,
+                    progress = FALSE)
 head(subset)
 
-
-## ----fig.width = 7, fig.height=3-----------------------------------------
-# create a plot of the data (i.e. daytime land surface temperature, LST)
-# the data has a multiplier of 0.02 in order to convert stored values
-# you can extract the multiplier (if applicable) from the data header
-date <- as.Date(subset$data$calendar_date)
-temperature <- subset$data$data * as.double(subset$header$scale)
-temperature[temperature == 0] <- NA
-
-plot(date,
-     temperature,
-     xlab = "Date",
-     ylab = expression("LST temperature (" * degree * "K)"))
 
 ## ----eval = TRUE---------------------------------------------------------
 # create data frame with a site_name, lat and lon column
@@ -67,17 +55,47 @@ subsets <- mt_batch_subset(df = df,
                      end = "2004-02-28",
                      out_dir = "~")
 
-print(str(subsets))
+head(subsets)
 
-## ----eval = TRUE---------------------------------------------------------
-# write the above file to disk
-mt_write(df = subset,
-             out_dir = tempdir())
+## ----fig.width = 7, fig.height=3-----------------------------------------
+# create a plot of the data - accounting for the multiplier (scale) component
+date <- as.Date(subset$calendar_date)
+temperature <- subset$value * as.double(subset$scale)
+temperature[temperature == 0] <- NA
 
-# read the data back in
-subset_disk <- mt_read(paste0(tempdir(),
-                  "/testsite_MOD11A2_2004-01-01_2004-06-01.csv"))
+plot(date,
+     temperature,
+     xlab = "Date",
+     ylab = "NDVI",
+     ylim = c(0,1),
+     type = "l")
 
-# compare original to read from disk
-identical(subset, subset_disk)
+## ------------------------------------------------------------------------
+# convert the coordinates
+lat_lon <- sin_to_ll(subset$xllcorner, subset$yllcorner)
+
+# bind with the original dataframe
+subset <- cbind(subset, lat_lon)
+
+head(subset)
+
+## ------------------------------------------------------------------------
+# convert to bounding box
+bb <- apply(subset, 1, function(x){
+  mt_bbox(xllcorner = x['xllcorner'],
+          yllcorner = x['yllcorner'],
+           cellsize = x['cellsize'],
+           nrows = x['nrows'],
+           ncols = x['ncols'])
+})
+
+# plot one bounding box
+plot(bb[[1]])
+
+# add the location of the queried coordinate within the polygon
+points(subset$longitude[1],
+       subset$latitude[1],
+       pch = 20,
+       col = "red")
+
 

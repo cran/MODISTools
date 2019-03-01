@@ -4,15 +4,15 @@
 \alias{mt_subset}
 \title{Download MODIS Land Products subsets}
 \usage{
-mt_subset(product = NULL, band = NULL, lat = NULL, lon = NULL,
-  start = "2000-01-01", end = format(Sys.time(), "\%Y-\%m-\%d"),
-  km_lr = 0, km_ab = 0, site_id = NULL, site_name = "sitename",
-  out_dir = tempdir(), internal = TRUE)
+mt_subset(product, band, lat, lon, start = "2000-01-01",
+  end = format(Sys.time(), "\%Y-\%m-\%d"), km_lr = 0, km_ab = 0,
+  site_id, site_name = "sitename", out_dir = tempdir(),
+  internal = TRUE, progress = TRUE)
 }
 \arguments{
 \item{product}{a valid MODIS product name}
 
-\item{band}{band to download (default = \code{NULL}, all bands)}
+\item{band}{band to download}
 
 \item{lat}{latitude in decimal degrees}
 
@@ -36,10 +36,11 @@ mt_subset(product = NULL, band = NULL, lat = NULL, lon = NULL,
 
 \item{internal}{should the data be returned as an internal data structure
 \code{TRUE} or \code{FALSE} (default = \code{TRUE})}
+
+\item{progress}{show download progress}
 }
 \value{
-A nested list containing the downloaded data and a descriptive
-header with meta-data.
+A data frame combining meta-data and actual data values.
 }
 \description{
 Lists all available dates for a MODIS Land Products Subset product
@@ -55,9 +56,16 @@ subset <- mt_subset(product = "MOD11A2",
                         lon = -110,
                         band = "LST_Day_1km",
                         start = "2004-01-01",
-                        end = "2004-03-31")
- print(str(subset))
+                        end = "2004-03-31",
+                        progress = FALSE)
+ head(subset)
 }
+}
+\seealso{
+\code{\link[MODISTools]{mt_sites}}
+\code{\link[MODISTools]{mt_dates}} \code{\link[MODISTools]{mt_bands}}
+\code{\link[MODISTools]{mt_products}}
+\code{\link[MODISTools]{mt_batch_subset}}
 }
 \keyword{Land}
 \keyword{MODIS}

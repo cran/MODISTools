@@ -12,264 +12,76 @@
 
 <meta name="author" content="Koen Hufkens" />
 
-<meta name="date" content="2018-06-14" />
+<meta name="date" content="2019-03-01" />
 
 <title>MODISTools</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
+})();
+</script>
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#header {
-text-align: center;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -280,259 +92,230 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">MODISTools</h1>
 <h4 class="author"><em>Koen Hufkens</em></h4>
-<h4 class="date"><em>2018-06-14</em></h4>
+<h4 class="date"><em>2019-03-01</em></h4>
 
 
 
-<p>The MODISTools package has as goal to facilitate the interface between R and the MODIS Land Product Subset API at the Oak Ridge National Laboratory DAAC. This programmatic interface to the <a href="https://modis.ornl.gov/data/modis_webservice.html">‘MODIS Land Products Subsets’ web services</a> allows for easy downloads of ‘MODIS’ time series directly to your R workspace or your computer. Below an examples are provided on how to download a MODIS time series as well as list ancillary data.</p>
+<p>The MODISTools package has as goal to facilitate the interface between R and the MODIS Land Product Subset API at the Oak Ridge National Laboratory DAAC. This programmatic interface to the <a href="https://modis.ornl.gov/data/modis_webservice.html">‘MODIS Land Products Subsets’ web services</a> allows for easy downloads of ‘MODIS’ time series directly to your R workspace or your computer. Below an example is provided on how to download a MODIS time series as well as list ancillary data.</p>
 <div id="listing-products-bands-dates" class="section level3">
 <h3>Listing products / bands / dates</h3>
-<p>In order to assess which products are available, which product bands are provided and which temporal range is covered one has to list these ancillary data. All these options can be queried using the mt_*() functions.</p>
+<p>In order to assess which products are available, which product bands are provided and which temporal range is covered one has to list these ancillary data. All these options can be queried using the <code>mt_*()</code> functions.</p>
 <p>To list all available products use the mt_products() function.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">products &lt;-<span class="st"> </span><span class="kw">mt_products</span>()</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(products)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt;    product</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; 1  MCD12Q1</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; 2 MCD15A2H</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; 3 MCD15A3H</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; 4  MOD09A1</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; 5  MOD11A2</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; 6  MOD13Q1</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;                                                                               description</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; 1                   MODIS/Terra+Aqua Land Cover Type (LC) Yearly L3 Global 500 m SIN Grid</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; 2        MODIS/Terra+Aqua Leaf Area Index/FPAR (LAI/FPAR)  8-Day L4 Global 500 m SIN Grid</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; 3         MODIS/Terra+Aqua Leaf Area Index/FPAR (LAI/FPAR) 4-Day L4 Global 500 m SIN Grid</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; 4                    MODIS/Terra Surface Reflectance (SREF) 8-Day L3 Global 500m SIN Grid</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; 5 MODIS/Terra Land Surface Temperature and Emissivity (LST) 8-Day L3 Global 1 km SIN Grid</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; 6                MODIS/Terra Vegetation Indices (NDVI/EVI) 16-Day L3 Global 250m SIN Grid</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;   frequency resolution_meters</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; 1    Yearly               500</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; 2     8-Day               500</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; 3     4-Day               500</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; 4     8-Day               500</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; 5     8-Day              1000</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; 6    16-Day               250</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">products &lt;-<span class="st"> </span><span class="kw">mt_products</span>()
+<span class="kw">head</span>(products)
+<span class="co">#&gt;    product</span>
+<span class="co">#&gt; 1   Daymet</span>
+<span class="co">#&gt; 2  MCD12Q1</span>
+<span class="co">#&gt; 3  MCD12Q2</span>
+<span class="co">#&gt; 4 MCD15A2H</span>
+<span class="co">#&gt; 5 MCD15A3H</span>
+<span class="co">#&gt; 6  MCD19A3</span>
+<span class="co">#&gt;                                                                        description</span>
+<span class="co">#&gt; 1  Daily Surface Weather Data (Daymet) on a 1-km Grid for North America, Version 3</span>
+<span class="co">#&gt; 2            MODIS/Terra+Aqua Land Cover Type (LC) Yearly L3 Global 500 m SIN Grid</span>
+<span class="co">#&gt; 3       MODIS/Terra+Aqua Land Cover Dynamics (LCD) Yearly L3 Global 500 m SIN Grid</span>
+<span class="co">#&gt; 4 MODIS/Terra+Aqua Leaf Area Index/FPAR (LAI/FPAR)  8-Day L4 Global 500 m SIN Grid</span>
+<span class="co">#&gt; 5  MODIS/Terra+Aqua Leaf Area Index/FPAR (LAI/FPAR) 4-Day L4 Global 500 m SIN Grid</span>
+<span class="co">#&gt; 6     MODIS/Terra+Aqua BRDF Model Parameters (MAIAC) 8-Day L3 Global 1 km SIN Grid</span>
+<span class="co">#&gt;   frequency resolution_meters</span>
+<span class="co">#&gt; 1     1 day              1000</span>
+<span class="co">#&gt; 2    1 year               500</span>
+<span class="co">#&gt; 3    1 year               500</span>
+<span class="co">#&gt; 4     8 day               500</span>
+<span class="co">#&gt; 5     4 day               500</span>
+<span class="co">#&gt; 6     8 day              1000</span></code></pre></div>
 <p>To list all available bands for a given product use the mt_bands() function.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">bands &lt;-<span class="st"> </span><span class="kw">mt_bands</span>(<span class="dt">product =</span> <span class="st">&quot;MOD11A2&quot;</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">head</span>(bands)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;            band                          description  units   valid_range</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 1 Day_view_angl View zenith angle of day observation degree      0 to 130</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 2       Emis_32                   Band 32 emissivity   &lt;NA&gt;      1 to 255</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 3       Emis_31                   Band 31 emissivity   &lt;NA&gt;      1 to 255</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 4      QC_Night     Nighttime LST Quality indicators   &lt;NA&gt;      0 to 255</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 5 Day_view_time        Local time of day observation    hrs      0 to 240</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 6   LST_Day_1km     Daytime Land Surface Temperature Kelvin 7500 to 65535</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   fill_value</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 1        255</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; 2          0</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 3          0</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 4       &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; 5        255</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; 6          0</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bands &lt;-<span class="st"> </span><span class="kw">mt_bands</span>(<span class="dt">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>)
+<span class="kw">head</span>(bands)
+<span class="co">#&gt;                             band                     description</span>
+<span class="co">#&gt; 1        250m_16_days_VI_Quality           VI quality indicators</span>
+<span class="co">#&gt; 2  250m_16_days_blue_reflectance      Surface Reflectance Band 3</span>
+<span class="co">#&gt; 3 250m_16_days_pixel_reliability Quality reliability of VI pixel</span>
+<span class="co">#&gt; 4   250m_16_days_NIR_reflectance      Surface Reflectance Band 2</span>
+<span class="co">#&gt; 5   250m_16_days_MIR_reflectance      Surface Reflectance Band 7</span>
+<span class="co">#&gt; 6              250m_16_days_NDVI             16 day NDVI average</span>
+<span class="co">#&gt;                   units    valid_range fill_value</span>
+<span class="co">#&gt; 1             bit field     0 to 65534         -1</span>
+<span class="co">#&gt; 2           reflectance     0 to 10000      -1000</span>
+<span class="co">#&gt; 3                  rank         0 to 3         -1</span>
+<span class="co">#&gt; 4           reflectance     0 to 10000      -1000</span>
+<span class="co">#&gt; 5           reflectance     0 to 10000      -1000</span>
+<span class="co">#&gt; 6 NDVI ratio - No units -2000 to 10000      -3000</span></code></pre></div>
 <p>To list all available dates (temporal coverage) for a given product and location use the mt_dates() function.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dates &lt;-<span class="st"> </span><span class="kw">mt_dates</span>(<span class="dt">product =</span> <span class="st">&quot;MOD11A2&quot;</span>, <span class="dt">lat =</span> <span class="dv">42</span>, <span class="dt">lon =</span> <span class="dv">-110</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">head</span>(dates)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   modis_date calendar_date</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; 1   A2000049    2000-02-18</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 2   A2000057    2000-02-26</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 3   A2000065    2000-03-05</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 4   A2000073    2000-03-13</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 5   A2000081    2000-03-21</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 6   A2000089    2000-03-29</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dates &lt;-<span class="st"> </span><span class="kw">mt_dates</span>(<span class="dt">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>, <span class="dt">lat =</span> <span class="dv">42</span>, <span class="dt">lon =</span> <span class="op">-</span><span class="dv">110</span>)
+<span class="kw">head</span>(dates)
+<span class="co">#&gt;   modis_date calendar_date</span>
+<span class="co">#&gt; 1   A2000049    2000-02-18</span>
+<span class="co">#&gt; 2   A2000065    2000-03-05</span>
+<span class="co">#&gt; 3   A2000081    2000-03-21</span>
+<span class="co">#&gt; 4   A2000097    2000-04-06</span>
+<span class="co">#&gt; 5   A2000113    2000-04-22</span>
+<span class="co">#&gt; 6   A2000129    2000-05-08</span></code></pre></div>
 </div>
 <div id="downloading-modis-time-series" class="section level3">
 <h3>Downloading MODIS time series</h3>
-<p>Once you decide on which data to download using the above functions you can use these parameters to download a time series using the mt_subset() function. The below query downloads MOD11A2 based daytime lands surface temperatures. The location is named ‘testsite’ and only covers the first six months of 2004. The output is saved to a variable called subset in the R workspace (as defined by the parameter internal = TRUE, when set to FALSE the data is written to file).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># download data</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">subset &lt;-<span class="st"> </span><span class="kw">mt_subset</span>(<span class="dt">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">                    <span class="dt">lat =</span> <span class="dv">40</span>,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">                    <span class="dt">lon =</span> <span class="dv">-110</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">                    <span class="dt">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">                    <span class="dt">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">                    <span class="dt">end =</span> <span class="st">&quot;2004-06-01&quot;</span>,</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">                    <span class="dt">km_lr =</span> <span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">                    <span class="dt">km_ab =</span> <span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">                    <span class="dt">site_name =</span> <span class="st">&quot;testsite&quot;</span>,</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">                    <span class="dt">internal =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="kw">head</span>(subset)</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; $header</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; $header$xllcorner</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; [1] &quot;-9370036.39&quot;</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; $header$yllcorner</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; [1] &quot;4447802.08&quot;</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; $header$cellsize</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; [1] 926.6254</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; $header$nrows</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; [1] 1</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; $header$ncols</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; [1] 1</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; $header$band</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt; [1] &quot;LST_Day_1km&quot;</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt; $header$units</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt; [1] &quot;Kelvin&quot;</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt; $header$scale</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt; [1] &quot;0.02&quot;</span></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt; $header$latitude</span></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co">#&gt; [1] 40</span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#&gt; $header$longitude</span></a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="co">#&gt; [1] -110</span></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#&gt; $header$site</span></a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="co">#&gt; [1] &quot;testsite&quot;</span></a>
-<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="co">#&gt; $header$product</span></a>
-<a class="sourceLine" id="cb4-48" data-line-number="48"><span class="co">#&gt; [1] &quot;MOD11A2&quot;</span></a>
-<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="co">#&gt; $header$start</span></a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co">#&gt; [1] &quot;2004-01-01&quot;</span></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="co">#&gt; $header$end</span></a>
-<a class="sourceLine" id="cb4-54" data-line-number="54"><span class="co">#&gt; [1] &quot;2004-06-01&quot;</span></a>
-<a class="sourceLine" id="cb4-55" data-line-number="55"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"><span class="co">#&gt; $header$complete</span></a>
-<a class="sourceLine" id="cb4-57" data-line-number="57"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb4-58" data-line-number="58"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-59" data-line-number="59"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-60" data-line-number="60"><span class="co">#&gt; $data</span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt;    modis_date calendar_date        band   tile     proc_date pixel  data</span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="co">#&gt; 1    A2004001    2004-01-01 LST_Day_1km h09v05 2015212185706     1 13098</span></a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt; 2    A2004009    2004-01-09 LST_Day_1km h09v05 2015212201022     1 13062</span></a>
-<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="co">#&gt; 3    A2004017    2004-01-17 LST_Day_1km h09v05 2015212213103     1 13297</span></a>
-<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt; 4    A2004025    2004-01-25 LST_Day_1km h09v05 2015213005429     1 13323</span></a>
-<a class="sourceLine" id="cb4-66" data-line-number="66"><span class="co">#&gt; 5    A2004033    2004-02-02 LST_Day_1km h09v05 2015213090158     1 13315</span></a>
-<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt; 6    A2004041    2004-02-10 LST_Day_1km h09v05 2015213165253     1 13227</span></a>
-<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt; 7    A2004049    2004-02-18 LST_Day_1km h09v05 2015216182840     1 13739</span></a>
-<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt; 8    A2004057    2004-02-26 LST_Day_1km h09v05 2015217020635     1 13783</span></a>
-<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt; 9    A2004065    2004-03-05 LST_Day_1km h09v05 2015217091316     1 14748</span></a>
-<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt; 10   A2004073    2004-03-13 LST_Day_1km h09v05 2015217164857     1 15105</span></a>
-<a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt; 11   A2004081    2004-03-21 LST_Day_1km h09v05 2015217230030     1 15290</span></a>
-<a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt; 12   A2004089    2004-03-29 LST_Day_1km h09v05 2015218055617     1 15410</span></a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; 13   A2004097    2004-04-06 LST_Day_1km h09v05 2015218215903     1 15330</span></a>
-<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="co">#&gt; 14   A2004105    2004-04-14 LST_Day_1km h09v05 2015219063436     1     0</span></a>
-<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="co">#&gt; 15   A2004113    2004-04-22 LST_Day_1km h09v05 2015219140857     1 15463</span></a>
-<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="co">#&gt; 16   A2004121    2004-04-30 LST_Day_1km h09v05 2015219231453     1 15649</span></a>
-<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="co">#&gt; 17   A2004129    2004-05-08 LST_Day_1km h09v05 2015220070159     1 15612</span></a>
-<a class="sourceLine" id="cb4-79" data-line-number="79"><span class="co">#&gt; 18   A2004137    2004-05-16 LST_Day_1km h09v05 2015220154043     1 15418</span></a>
-<a class="sourceLine" id="cb4-80" data-line-number="80"><span class="co">#&gt; 19   A2004145    2004-05-24 LST_Day_1km h09v05 2015220231431     1 15375</span></a>
-<a class="sourceLine" id="cb4-81" data-line-number="81"><span class="co">#&gt; 20   A2004153    2004-06-01 LST_Day_1km h09v05 2015223193116     1 16052</span></a></code></pre></div>
-<p>The output format is a nested list with the true data provided as a <em>tidy</em> data frame, as shown above. When witten to a csv, when the parameter ‘internal’ is set to FALSE, the same information is retained. Data can be read back into the same format with the included mt_read() function (see below).</p>
-<p>Note that when a a region is defined using km_lr and km_ab multiple pixels might be returned. These are indexed using the ‘pixel’ column in the data frame containing the time series data. The remote sensing values are listed in the ‘data’ column. When no band is specified all bands of a given product are returned, be mindful of the fact that different bands might require different multipliers to represent their true values.</p>
-<p>An example plot, below, of the downloaded daytime land surface temperature is given below. The data is first converted with the appropriate multiplier (see header info) and the fill values removed. The data shows the gradual increase in temperature from winter into summer (in the northern hemisphere).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># create a plot of the data (i.e. daytime land surface temperature, LST)</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># the data has a multiplier of 0.02 in order to convert stored values</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># you can extract the multiplier (if applicable) from the data header</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(subset<span class="op">$</span>data<span class="op">$</span>calendar_date)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">temperature &lt;-<span class="st"> </span>subset<span class="op">$</span>data<span class="op">$</span>data <span class="op">*</span><span class="st"> </span><span class="kw">as.double</span>(subset<span class="op">$</span>header<span class="op">$</span>scale)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">temperature[temperature <span class="op">==</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">plot</span>(date,</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">     temperature,</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">     <span class="dt">xlab =</span> <span class="st">&quot;Date&quot;</span>,</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">     <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="st">&quot;LST temperature (&quot;</span> <span class="op">*</span><span class="st"> </span>degree <span class="op">*</span><span class="st"> &quot;K)&quot;</span>))</a></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>When a large selection of locations is needed you might benefit from using the batch download function batch_subset(), which provides a wrapper around the mt_subset() function in order to speed up large download batches. This function has a similar syntax to mt_subset() but requires a data frame defining site names (site_name) and locations (lat / lon) (or a comma delimited file with the same structure) to specify a list of download locations.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># create data frame with a site_name, lat and lon column</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># holding the respective names of sites and their location</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;site_name&quot;</span> =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;test&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">df<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="dv">40</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">df<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="dv">-110</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># an example batch download data frame</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="kw">print</span>(df)</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;   site_name lat  lon</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 1    test 1  40 -110</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 2    test 2  40 -110</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co"># test batch download</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">subsets &lt;-<span class="st"> </span><span class="kw">mt_batch_subset</span>(<span class="dt">df =</span> df,</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">                     <span class="dt">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,</a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">                     <span class="dt">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">                     <span class="dt">internal =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">                     <span class="dt">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">                     <span class="dt">end =</span> <span class="st">&quot;2004-02-28&quot;</span>,</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">                     <span class="dt">out_dir =</span> <span class="st">&quot;~&quot;</span>)</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="kw">print</span>(<span class="kw">str</span>(subsets))</a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; List of 2</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;  $ test 1:List of 2</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;   ..$ header:List of 15</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;   .. ..$ xllcorner: chr &quot;-9370036.39&quot;</span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt;   .. ..$ yllcorner: chr &quot;4447802.08&quot;</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt;   .. ..$ cellsize : num 927</span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt;   .. ..$ nrows    : int 1</span></a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt;   .. ..$ ncols    : int 1</span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt;   .. ..$ band     : chr &quot;LST_Day_1km&quot;</span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt;   .. ..$ units    : chr &quot;Kelvin&quot;</span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt;   .. ..$ scale    : chr &quot;0.02&quot;</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt;   .. ..$ latitude : num 40</span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt;   .. ..$ longitude: num -110</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt;   .. ..$ site     : chr &quot;test 1&quot;</span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt;   .. ..$ product  : chr &quot;MOD11A2&quot;</span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt;   .. ..$ start    : chr &quot;2004-01-01&quot;</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt;   .. ..$ end      : chr &quot;2004-02-28&quot;</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt;   .. ..$ complete : logi TRUE</span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt;   ..$ data  :'data.frame':   8 obs. of  7 variables:</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="co">#&gt;   .. ..$ modis_date   : chr [1:8] &quot;A2004001&quot; &quot;A2004009&quot; &quot;A2004017&quot; &quot;A2004025&quot; ...</span></a>
-<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co">#&gt;   .. ..$ calendar_date: chr [1:8] &quot;2004-01-01&quot; &quot;2004-01-09&quot; &quot;2004-01-17&quot; &quot;2004-01-25&quot; ...</span></a>
-<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="co">#&gt;   .. ..$ band         : chr [1:8] &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; ...</span></a>
-<a class="sourceLine" id="cb6-45" data-line-number="45"><span class="co">#&gt;   .. ..$ tile         : chr [1:8] &quot;h09v05&quot; &quot;h09v05&quot; &quot;h09v05&quot; &quot;h09v05&quot; ...</span></a>
-<a class="sourceLine" id="cb6-46" data-line-number="46"><span class="co">#&gt;   .. ..$ proc_date    : chr [1:8] &quot;2015212185706&quot; &quot;2015212201022&quot; &quot;2015212213103&quot; &quot;2015213005429&quot; ...</span></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="co">#&gt;   .. ..$ pixel        : chr [1:8] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...</span></a>
-<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="co">#&gt;   .. ..$ data         : int [1:8] 13098 13062 13297 13323 13315 13227 13739 13783</span></a>
-<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr &quot;MODISTools&quot;</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="co">#&gt;  $ test 2:List of 2</span></a>
-<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="co">#&gt;   ..$ header:List of 15</span></a>
-<a class="sourceLine" id="cb6-52" data-line-number="52"><span class="co">#&gt;   .. ..$ xllcorner: chr &quot;-9370036.39&quot;</span></a>
-<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="co">#&gt;   .. ..$ yllcorner: chr &quot;4447802.08&quot;</span></a>
-<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="co">#&gt;   .. ..$ cellsize : num 927</span></a>
-<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="co">#&gt;   .. ..$ nrows    : int 1</span></a>
-<a class="sourceLine" id="cb6-56" data-line-number="56"><span class="co">#&gt;   .. ..$ ncols    : int 1</span></a>
-<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="co">#&gt;   .. ..$ band     : chr &quot;LST_Day_1km&quot;</span></a>
-<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="co">#&gt;   .. ..$ units    : chr &quot;Kelvin&quot;</span></a>
-<a class="sourceLine" id="cb6-59" data-line-number="59"><span class="co">#&gt;   .. ..$ scale    : chr &quot;0.02&quot;</span></a>
-<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="co">#&gt;   .. ..$ latitude : num 40</span></a>
-<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="co">#&gt;   .. ..$ longitude: num -110</span></a>
-<a class="sourceLine" id="cb6-62" data-line-number="62"><span class="co">#&gt;   .. ..$ site     : chr &quot;test 2&quot;</span></a>
-<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt;   .. ..$ product  : chr &quot;MOD11A2&quot;</span></a>
-<a class="sourceLine" id="cb6-64" data-line-number="64"><span class="co">#&gt;   .. ..$ start    : chr &quot;2004-01-01&quot;</span></a>
-<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="co">#&gt;   .. ..$ end      : chr &quot;2004-02-28&quot;</span></a>
-<a class="sourceLine" id="cb6-66" data-line-number="66"><span class="co">#&gt;   .. ..$ complete : logi TRUE</span></a>
-<a class="sourceLine" id="cb6-67" data-line-number="67"><span class="co">#&gt;   ..$ data  :'data.frame':   8 obs. of  7 variables:</span></a>
-<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="co">#&gt;   .. ..$ modis_date   : chr [1:8] &quot;A2004001&quot; &quot;A2004009&quot; &quot;A2004017&quot; &quot;A2004025&quot; ...</span></a>
-<a class="sourceLine" id="cb6-69" data-line-number="69"><span class="co">#&gt;   .. ..$ calendar_date: chr [1:8] &quot;2004-01-01&quot; &quot;2004-01-09&quot; &quot;2004-01-17&quot; &quot;2004-01-25&quot; ...</span></a>
-<a class="sourceLine" id="cb6-70" data-line-number="70"><span class="co">#&gt;   .. ..$ band         : chr [1:8] &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; &quot;LST_Day_1km&quot; ...</span></a>
-<a class="sourceLine" id="cb6-71" data-line-number="71"><span class="co">#&gt;   .. ..$ tile         : chr [1:8] &quot;h09v05&quot; &quot;h09v05&quot; &quot;h09v05&quot; &quot;h09v05&quot; ...</span></a>
-<a class="sourceLine" id="cb6-72" data-line-number="72"><span class="co">#&gt;   .. ..$ proc_date    : chr [1:8] &quot;2015212185706&quot; &quot;2015212201022&quot; &quot;2015212213103&quot; &quot;2015213005429&quot; ...</span></a>
-<a class="sourceLine" id="cb6-73" data-line-number="73"><span class="co">#&gt;   .. ..$ pixel        : chr [1:8] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...</span></a>
-<a class="sourceLine" id="cb6-74" data-line-number="74"><span class="co">#&gt;   .. ..$ data         : int [1:8] 13098 13062 13297 13323 13315 13227 13739 13783</span></a>
-<a class="sourceLine" id="cb6-75" data-line-number="75"><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr &quot;MODISTools&quot;</span></a>
-<a class="sourceLine" id="cb6-76" data-line-number="76"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<p>Once you decide on which data to download using the above functions you can use these parameters to download a time series using the <code>mt_subset()</code> function. The below query downloads MOD11A2 based daytime lands surface temperatures. The location is named ‘testsite’ and only covers the first six months of 2004. The output is saved to a variable called subset in the R workspace (as defined by the parameter internal = TRUE, when set to FALSE the data is written to file).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># download data</span>
+subset &lt;-<span class="st"> </span><span class="kw">mt_subset</span>(<span class="dt">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>,
+                    <span class="dt">lat =</span> <span class="fl">42.534171</span>,
+                    <span class="dt">lon =</span> <span class="op">-</span><span class="fl">72.179003</span>,
+                    <span class="dt">band =</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>,
+                    <span class="dt">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,
+                    <span class="dt">end =</span> <span class="st">&quot;2005-12-30&quot;</span>,
+                    <span class="dt">km_lr =</span> <span class="dv">0</span>,
+                    <span class="dt">km_ab =</span> <span class="dv">0</span>,
+                    <span class="dt">site_name =</span> <span class="st">&quot;testsite&quot;</span>,
+                    <span class="dt">internal =</span> <span class="ot">TRUE</span>,
+                    <span class="dt">progress =</span> <span class="ot">FALSE</span>)
+<span class="kw">head</span>(subset)
+<span class="co">#&gt;       xllcorner  yllcorner      cellsize nrows ncols              band</span>
+<span class="co">#&gt; 1.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 2.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 3.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 4.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 5.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 6.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt;                     units  scale latitude longitude     site product</span>
+<span class="co">#&gt; 1.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 2.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 3.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 4.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 5.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 6.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt;          start        end complete modis_date calendar_date   tile</span>
+<span class="co">#&gt; 1.1 2004-01-01 2005-12-30     TRUE   A2004001    2004-01-01 h12v04</span>
+<span class="co">#&gt; 2.1 2004-01-01 2005-12-30     TRUE   A2004017    2004-01-17 h12v04</span>
+<span class="co">#&gt; 3.1 2004-01-01 2005-12-30     TRUE   A2004033    2004-02-02 h12v04</span>
+<span class="co">#&gt; 4.1 2004-01-01 2005-12-30     TRUE   A2004049    2004-02-18 h12v04</span>
+<span class="co">#&gt; 5.1 2004-01-01 2005-12-30     TRUE   A2004065    2004-03-05 h12v04</span>
+<span class="co">#&gt; 6.1 2004-01-01 2005-12-30     TRUE   A2004081    2004-03-21 h12v04</span>
+<span class="co">#&gt;         proc_date pixel value</span>
+<span class="co">#&gt; 1.1 2015154120947     1 -3000</span>
+<span class="co">#&gt; 2.1 2015154121734     1  5108</span>
+<span class="co">#&gt; 3.1 2015154122102     1  3286</span>
+<span class="co">#&gt; 4.1 2015154125157     1  2115</span>
+<span class="co">#&gt; 5.1 2015154125222     1  4775</span>
+<span class="co">#&gt; 6.1 2015154125302     1  5687</span></code></pre></div>
+<p>The output format is a <em>tidy</em> data frame, as shown above. When witten to a csv with the parameter <code>internal = FALSE</code> this will result in a flat file on disk.</p>
+<p>Note that when a a region is defined using km_lr and km_ab multiple pixels might be returned. These are indexed using the <code>pixel</code> column in the data frame containing the time series data. The remote sensing values are listed in the <code>value</code> column. When no band is specified all bands of a given product are returned, be mindful of the fact that different bands might require different multipliers to represent their true values.</p>
+<p>When a large selection of locations is needed you might benefit from using the batch download function <code>mt_batch_subset()</code>, which provides a wrapper around the <code>mt_subset()</code> function in order to speed up large download batches. This function has a similar syntax to <code>mt_subset()</code> but requires a data frame defining site names (site_name) and locations (lat / lon) (or a comma delimited file with the same structure) to specify a list of download locations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create data frame with a site_name, lat and lon column</span>
+<span class="co"># holding the respective names of sites and their location</span>
+df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;site_name&quot;</span> =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;test&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+df<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="dv">40</span>
+df<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">110</span>
+
+<span class="co"># an example batch download data frame</span>
+<span class="kw">print</span>(df)
+<span class="co">#&gt;   site_name lat  lon</span>
+<span class="co">#&gt; 1    test 1  40 -110</span>
+<span class="co">#&gt; 2    test 2  40 -110</span>
+
+<span class="co"># test batch download</span>
+subsets &lt;-<span class="st"> </span><span class="kw">mt_batch_subset</span>(<span class="dt">df =</span> df,
+                     <span class="dt">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,
+                     <span class="dt">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,
+                     <span class="dt">internal =</span> <span class="ot">TRUE</span>,
+                     <span class="dt">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,
+                     <span class="dt">end =</span> <span class="st">&quot;2004-02-28&quot;</span>,
+                     <span class="dt">out_dir =</span> <span class="st">&quot;~&quot;</span>)
+
+<span class="kw">head</span>(subsets)
+<span class="co">#&gt;         xllcorner  yllcorner         cellsize nrows ncols        band</span>
+<span class="co">#&gt; 1.1.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt; 1.2.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt; 1.3.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt; 1.4.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt; 1.5.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt; 1.6.1 -9370036.39 4447802.08 926.625433055834     1     1 LST_Day_1km</span>
+<span class="co">#&gt;        units scale latitude longitude   site product      start        end</span>
+<span class="co">#&gt; 1.1.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt; 1.2.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt; 1.3.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt; 1.4.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt; 1.5.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt; 1.6.1 Kelvin  0.02       40      -110 test 1 MOD11A2 2004-01-01 2004-02-28</span>
+<span class="co">#&gt;       complete modis_date calendar_date   tile     proc_date pixel value</span>
+<span class="co">#&gt; 1.1.1     TRUE   A2004001    2004-01-01 h09v05 2015212185706     1 13098</span>
+<span class="co">#&gt; 1.2.1     TRUE   A2004009    2004-01-09 h09v05 2015212201022     1 13062</span>
+<span class="co">#&gt; 1.3.1     TRUE   A2004017    2004-01-17 h09v05 2015212213103     1 13297</span>
+<span class="co">#&gt; 1.4.1     TRUE   A2004025    2004-01-25 h09v05 2015213005429     1 13323</span>
+<span class="co">#&gt; 1.5.1     TRUE   A2004033    2004-02-02 h09v05 2015213090158     1 13315</span>
+<span class="co">#&gt; 1.6.1     TRUE   A2004041    2004-02-10 h09v05 2015213165253     1 13227</span></code></pre></div>
 </div>
-<div id="reading-and-writing-data-from-to-file" class="section level3">
-<h3>Reading and writing data from / to file</h3>
-<p>In both download functions data can be written to a csv file in a particular directory using the ‘internal’ and ‘out_dir’ function options. The mt_read() function allows you to read in these csv files easily and into the same data structure as used when downloading directy into your R workspace.</p>
-<pre><code>[site_name]_[product]_[start]_[end].csv</code></pre>
-<p>The data can be read back into the original nested structed using mt_read().</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># write the above file to disk</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">mt_write</span>(<span class="dt">df =</span> subset,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">             <span class="dt">out_dir =</span> <span class="kw">tempdir</span>())</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># read the data back in</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">subset_disk &lt;-<span class="st"> </span><span class="kw">mt_read</span>(<span class="kw">paste0</span>(<span class="kw">tempdir</span>(),</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">                  <span class="st">&quot;/testsite_MOD11A2_2004-01-01_2004-06-01.csv&quot;</span>))</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># compare original to read from disk</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="kw">identical</span>(subset, subset_disk)</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<div id="worked-example-using-ndvi-values" class="section level3">
+<h3>Worked example using NDVI values</h3>
+<p>The above downloaded subset shows normalized difference vegetation index (NDVI), and <a href="https://earthobservatory.nasa.gov/Features/MeasuringVegetation/measuring_vegetation_2.php">an indicator of plant health, density and or complexity</a> for the experimental <a href="https://harvardforest.fas.harvard.edu/">Harvard Forest</a> site. When plotted the yearly pattern of rising and falling NDVI values shows vegetation growth in spring, and senescence or leaf drop in fall. Values lower than ~0.4 are contaminated by snow or clouds.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a plot of the data - accounting for the multiplier (scale) component</span>
+date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(subset<span class="op">$</span>calendar_date)
+temperature &lt;-<span class="st"> </span>subset<span class="op">$</span>value <span class="op">*</span><span class="st"> </span><span class="kw">as.double</span>(subset<span class="op">$</span>scale)
+temperature[temperature <span class="op">==</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>
+
+<span class="kw">plot</span>(date,
+     temperature,
+     <span class="dt">xlab =</span> <span class="st">&quot;Date&quot;</span>,
+     <span class="dt">ylab =</span> <span class="st">&quot;NDVI&quot;</span>,
+     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),
+     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="conversion-of-corner-coordinates" class="section level3">
+<h3>Conversion of corner coordinates</h3>
+<p>Corner coordinates of the pixel area extracted are provided, these can be used to calculate the coverage of the extracted area. Coordinates are provided in the original sinusoidal grid coordinates and first have to be transformed into latitude longitude (for convenience).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert the coordinates</span>
+lat_lon &lt;-<span class="st"> </span><span class="kw">sin_to_ll</span>(subset<span class="op">$</span>xllcorner, subset<span class="op">$</span>yllcorner)
+
+<span class="co"># bind with the original dataframe</span>
+subset &lt;-<span class="st"> </span><span class="kw">cbind</span>(subset, lat_lon)
+
+<span class="kw">head</span>(subset)
+<span class="co">#&gt;       xllcorner  yllcorner      cellsize nrows ncols              band</span>
+<span class="co">#&gt; 1.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 2.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 3.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 4.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 5.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt; 6.1 -5914186.84 4729496.17 231.656358264     1     1 250m_16_days_NDVI</span>
+<span class="co">#&gt;                     units  scale latitude longitude     site product</span>
+<span class="co">#&gt; 1.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 2.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 3.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 4.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 5.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt; 6.1 NDVI ratio - No units 0.0001 42.53417   -72.179 testsite MOD13Q1</span>
+<span class="co">#&gt;          start        end complete modis_date calendar_date   tile</span>
+<span class="co">#&gt; 1.1 2004-01-01 2005-12-30     TRUE   A2004001    2004-01-01 h12v04</span>
+<span class="co">#&gt; 2.1 2004-01-01 2005-12-30     TRUE   A2004017    2004-01-17 h12v04</span>
+<span class="co">#&gt; 3.1 2004-01-01 2005-12-30     TRUE   A2004033    2004-02-02 h12v04</span>
+<span class="co">#&gt; 4.1 2004-01-01 2005-12-30     TRUE   A2004049    2004-02-18 h12v04</span>
+<span class="co">#&gt; 5.1 2004-01-01 2005-12-30     TRUE   A2004065    2004-03-05 h12v04</span>
+<span class="co">#&gt; 6.1 2004-01-01 2005-12-30     TRUE   A2004081    2004-03-21 h12v04</span>
+<span class="co">#&gt;         proc_date pixel value longitude_ll latitude_ll</span>
+<span class="co">#&gt; 1.1 2015154120947     1 -3000    -72.17891    42.53333</span>
+<span class="co">#&gt; 2.1 2015154121734     1  5108    -72.17891    42.53333</span>
+<span class="co">#&gt; 3.1 2015154122102     1  3286    -72.17891    42.53333</span>
+<span class="co">#&gt; 4.1 2015154125157     1  2115    -72.17891    42.53333</span>
+<span class="co">#&gt; 5.1 2015154125222     1  4775    -72.17891    42.53333</span>
+<span class="co">#&gt; 6.1 2015154125302     1  5687    -72.17891    42.53333</span></code></pre></div>
+<p>Together with meta-data regarding cell size, number of columns and rows the bounding box of the extracted data can be calculated.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert to bounding box</span>
+bb &lt;-<span class="st"> </span><span class="kw">apply</span>(subset, <span class="dv">1</span>, <span class="cf">function</span>(x){
+  <span class="kw">mt_bbox</span>(<span class="dt">xllcorner =</span> x[<span class="st">'xllcorner'</span>],
+          <span class="dt">yllcorner =</span> x[<span class="st">'yllcorner'</span>],
+           <span class="dt">cellsize =</span> x[<span class="st">'cellsize'</span>],
+           <span class="dt">nrows =</span> x[<span class="st">'nrows'</span>],
+           <span class="dt">ncols =</span> x[<span class="st">'ncols'</span>])
+})
+
+<span class="co"># plot one bounding box</span>
+<span class="kw">plot</span>(bb[[<span class="dv">1</span>]])
+
+<span class="co"># add the location of the queried coordinate within the polygon</span>
+<span class="kw">points</span>(subset<span class="op">$</span>longitude[<span class="dv">1</span>],
+       subset<span class="op">$</span>latitude[<span class="dv">1</span>],
+       <span class="dt">pch =</span> <span class="dv">20</span>,
+       <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 
 
