@@ -4,15 +4,27 @@
 \alias{mt_subset}
 \title{Download MODIS Land Products subsets}
 \usage{
-mt_subset(product, band, lat, lon, start = "2000-01-01",
-  end = format(Sys.time(), "\%Y-\%m-\%d"), km_lr = 0, km_ab = 0,
-  site_id, site_name = "sitename", out_dir = tempdir(),
-  internal = TRUE, progress = TRUE)
+mt_subset(
+  product,
+  band,
+  lat,
+  lon,
+  start = "2000-01-01",
+  end = format(Sys.time(), "\%Y-\%m-\%d"),
+  km_lr = 0,
+  km_ab = 0,
+  site_id,
+  network,
+  site_name = "sitename",
+  out_dir = tempdir(),
+  internal = TRUE,
+  progress = TRUE
+)
 }
 \arguments{
 \item{product}{a valid MODIS product name}
 
-\item{band}{band to download}
+\item{band}{band or bands (as a character vector) to download}
 
 \item{lat}{latitude in decimal degrees}
 
@@ -22,11 +34,14 @@ mt_subset(product, band, lat, lon, start = "2000-01-01",
 
 \item{end}{end date}
 
-\item{km_lr}{km left-right to sample}
+\item{km_lr}{km left-right to sample (rounded to the nearest integer)}
 
-\item{km_ab}{km above-below to sample}
+\item{km_ab}{km above-below to sample (rounded to the nearest integer)}
 
 \item{site_id}{site id (overides lat / lon)}
+
+\item{network}{the network for which to generate the site list,
+when not provided the complete list is provided}
 
 \item{site_name}{arbitrary site name used in writing data to file
 (default = sitename)}
@@ -43,8 +58,10 @@ mt_subset(product, band, lat, lon, start = "2000-01-01",
 A data frame combining meta-data and actual data values.
 }
 \description{
-Lists all available dates for a MODIS Land Products Subset product
-at a particular location.
+Download a MODIS Land Products Subset product
+for a given point location buffered with a given amount of kilometers
+left-right, top-bottom for a given location (provided as latitude and
+longitude values).
 }
 \examples{
 
@@ -67,9 +84,3 @@ subset <- mt_subset(product = "MOD11A2",
 \code{\link[MODISTools]{mt_products}}
 \code{\link[MODISTools]{mt_batch_subset}}
 }
-\keyword{Land}
-\keyword{MODIS}
-\keyword{Products}
-\keyword{Subsets,}
-\keyword{meta-data}
-\keyword{products,}

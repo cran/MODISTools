@@ -9,7 +9,6 @@
 #' @param x sinusoidal x coordinate (vector)
 #' @param y sinusoidal y coordinate (vector)
 #' @seealso \code{\link[MODISTools]{mt_bbox}}
-#' @keywords MODIS Land Products Subsets, products, meta-data
 #' @export
 #' @examples
 #'
@@ -65,9 +64,10 @@ sin_to_ll <- function(x, y){
 #' @param cellsize cell size provided by \code{\link[MODISTools]{mt_subset}}
 #' @param nrows cell size provided by \code{\link[MODISTools]{mt_subset}}
 #' @param ncols cell size provided by \code{\link[MODISTools]{mt_subset}}
+#' @param transform transform the bounding box from sin to lat long coordinates,
+#' \code{TRUE} or \code{FALSE} (default = \code{TRUE})
 #' @seealso \code{\link[MODISTools]{sin_to_ll}},
 #' \code{\link[MODISTools]{mt_subset}}
-#' @keywords MODIS Land Products Subsets, products, meta-data
 #' @export
 #' @examples
 #'
@@ -104,7 +104,8 @@ mt_bbox <- function(
   yllcorner,
   cellsize,
   nrows,
-  ncols
+  ncols,
+  transform = TRUE
   ){
 
   # check parameters
@@ -140,6 +141,11 @@ mt_bbox <- function(
   # https://lpdaac.usgs.gov/dataset_discovery/modis
   # and wikipedia:
   # https://en.wikipedia.org/wiki/Sinusoidal_projection
+
+  # return untransformed (sinusoidal) data upon request
+  if(!transform){
+    return(p)
+  }
 
   # transform the polygon to lat-lon
   p <- sf::st_transform(p, crs = 4326)

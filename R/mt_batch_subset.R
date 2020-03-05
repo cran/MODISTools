@@ -15,13 +15,12 @@
 #' @param km_ab km above-below to sample
 #' @param out_dir location where to store all data
 #' @param ncores number of cores to use while downloading in parallel
-#' (auto will select the all cpu cores - 1)
+#' (auto will select the all cpu cores - 1 or 10)
 #' @param internal should the data be returned as an internal data structure
 #' \code{TRUE} or \code{FALSE} (default = \code{TRUE})
 #' @return A data frame combining meta-data and actual data values, data from
 #' different sites is concatenated into one large dataframe. Subsets can be
 #' created by searching on sitename.
-#' @keywords MODIS Land Products Subsets, products, meta-data
 #' @seealso \code{\link[MODISTools]{mt_sites}}
 #' \code{\link[MODISTools]{mt_dates}} \code{\link[MODISTools]{mt_bands}}
 #' \code{\link[MODISTools]{mt_products}}
@@ -40,6 +39,23 @@
 #'
 #' # test batch download
 #' subsets <- mt_batch_subset(df = df,
+#'                         product = "MOD11A2",
+#'                         band = "LST_Day_1km",
+#'                         internal = TRUE,
+#'                         start = "2004-01-01",
+#'                         end = "2004-03-31")
+#'
+#' # the same can be done using a CSV file with
+#' # a data structure similar to the dataframe above
+#'
+#' write.table(df, "my_sites.csv",
+#'  quote = FALSE,
+#'  row.names = FALSE,
+#'  col.names = TRUE,
+#'  sep = ",")
+#'
+#' # test batch download form CSV
+#' subsets <- mt_batch_subset(df = "./my_sites.csv",
 #'                         product = "MOD11A2",
 #'                         band = "LST_Day_1km",
 #'                         internal = TRUE,
@@ -114,6 +130,11 @@ mt_batch_subset <- function(
   # Calculate the number of cores
   if (ncores == "auto"){
     ncores <- parallel::detectCores() - 1
+
+    # only 10 concurrent threads are allowed
+    if(ncores > 10){
+      ncores <- 10
+    }
   }
 
   # trap excessive cores for given data
