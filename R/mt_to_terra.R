@@ -1,11 +1,12 @@
-#' Convert tidy MODISTools data to raster (stack)
+#' Convert tidy MODISTools data to terra SpatRaster
 #'
-#' Convert tidy MODISTools data to a raster (stack)
+#' Convert tidy MODISTools data to a terra SpatRaster for easy
+#' spatial processing and plotting.
 #'
 #' @param df a valid MODISTools data frame with a single band (filter for a
 #' particular band using the dplyr \code{filter()} function or base \code{subset()}
 #' @param reproject reproject output to lat / long (default = \code{FALSE})
-#' @return A raster stack populated with the tidy dataframe values
+#' @return A terra SpatRaster populated with the tidy dataframe values
 #' @seealso \code{\link[MODISTools]{mt_subset}}
 #' \code{\link[MODISTools]{mt_batch_subset}}
 #' @export
@@ -29,12 +30,12 @@
 #' head(LC)
 #'
 #' # convert to raster
-#' LC_r <- mt_to_raster(df = LC)
+#' LC_r <- mt_to_terra(df = LC)
 #'}
-#'
-#' @importFrom raster stack
+#' @importFrom terra rast
+#' @import sp
 
-mt_to_raster <- function(
+mt_to_terra <- function(
   df,
   reproject = FALSE
   ){
@@ -69,17 +70,19 @@ mt_to_raster <- function(
   df$scale[df$scale == "Not Available"] <- 1
 
   # loop over all dates, format rasters and return
-  r <- do.call("stack",
+  r <- do.call("c",
                lapply(dates, function(date){
+
                  # stuff values into raster
                  m <- matrix(as.numeric(df$value[df$calendar_date == date]) *
                                as.numeric(df$scale[df$calendar_date == date]),
                              df$nrows[1],
                              df$ncols[1],
-                             byrow = TRUE)
+                             byrow = TRUE
+                             )
 
                  # convert to raster and return
-                 return(raster::raster(m))
+                 return(terra::rast(m))
                })
   )
 
@@ -90,19 +93,23 @@ mt_to_raster <- function(
     cellsize = df$cellsize[1],
     nrows = df$nrows[1],
     ncols = df$ncols[1],
-    transform = FALSE)
+    transform = FALSE
+    )
 
   # convert to Spatial object (easier to get extent)
   bb <- sf::as_Spatial(bb)
 
   # assign extent + projection bb to raster
-  raster::extent(r) <- raster::extent(bb)
-  raster::projection(r) <- raster::projection(bb)
+  terra::ext(r) <- terra::ext(bb)
+  terra::crs(r) <- bb@proj4string@projargs
   names(r) <- as.character(dates)
 
   # reproject to lat long when desired
   if(reproject){
-    r <- raster::projectRaster(r, crs = "+init=epsg:4326")
+    r <- terra::project(
+      r,
+      crs = 4326
+      )
   }
 
   # return the data

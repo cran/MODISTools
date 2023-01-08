@@ -48,7 +48,7 @@ test_that("test coordinate transforms",{
 })
 
 # test raster conversions
-test_that("test raster conversion",{
+test_that("test terra conversion",{
   skip_on_cran()
   subset <- mt_subset(
     product = "MOD11A2",
@@ -61,27 +61,27 @@ test_that("test raster conversion",{
   )
 
   multi_band <- mt_subset(product = "MCD12Q1",
-            lat = 48.383662,
-            lon = 2.610250,
-            band = c("LC_Type1","LC_Type2"),
-            start = "2005-01-01",
-            end = "2005-06-30",
-            km_lr = 2,
-            km_ab = 2,
-            site_name = "testsite",
-            internal = TRUE,
-            progress = FALSE)
+                          lat = 48.383662,
+                          lon = 2.610250,
+                          band = c("LC_Type1","LC_Type2"),
+                          start = "2005-01-01",
+                          end = "2005-06-30",
+                          km_lr = 2,
+                          km_ab = 2,
+                          site_name = "testsite",
+                          internal = TRUE,
+                          progress = FALSE)
 
- # good conversion into stack
- expect_silent(mt_to_raster(subset))
+  # good conversion into stack
+  expect_silent(mt_to_terra(subset))
 
- # multi-band error
- expect_error(mt_to_raster(multi_band))
+  # multi-band error
+  expect_error(mt_to_terra(multi_band))
 
- # not a data frame
- expect_error(mt_to_raster(df = "not a dataframe"))
+  # not a data frame
+  expect_error(mt_to_terra(df = "not a dataframe"))
 
- # missing input
- expect_error(mt_to_raster())
+  # missing input
+  expect_error(mt_to_terra())
 })
 

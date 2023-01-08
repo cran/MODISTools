@@ -7,8 +7,7 @@ knitr::opts_chunk$set(
 
 # load the library
 library(MODISTools)
-library(raster)
-library(rgdal)
+library(terra)
 library(ggplot2)
 library(dplyr)
 library(sf)
@@ -43,9 +42,11 @@ head(dates)
 #                      km_ab = 20,
 #                      site_name = "arcachon",
 #                      internal = TRUE,
-#                      progress = FALSE)
+#                      progress = FALSE
+#                      )
 #  
-#  arcachon_lc <- mt_subset(product = "MCD12Q1",
+#  arcachon_lc <- mt_subset(
+#    product = "MCD12Q1",
 #    lat = 44.656286,
 #    lon =  -1.174748,
 #    band = "LC_Type1",
@@ -55,7 +56,8 @@ head(dates)
 #    km_ab = 20,
 #    site_name = "arcachon",
 #    internal = TRUE,
-#    progress = FALSE)
+#    progress = FALSE
+#    )
 
 ## -----------------------------------------------------------------------------
 head(arcachon_lai)
@@ -141,7 +143,7 @@ points(arcachon_lc$longitude[1],
 # convert to raster, when reproject is TRUE
 # the data is reprojected to lat / lon if FALSE
 # the data is shown in its original sinuidal projection
-LC_r <- mt_to_raster(df = arcachon_lc, reproject = TRUE)
+LC_r <- mt_to_terra(df = arcachon_lc, reproject = TRUE)
 
 # plot the raster data as a map
 plot(LC_r)
