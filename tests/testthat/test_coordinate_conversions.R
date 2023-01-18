@@ -15,7 +15,10 @@ test_that("test coordinate transforms",{
 
   # test conversion
   expect_is(
-    sin_to_ll(x = subset$xllcorner, y = subset$yllcorner)
+    sin_to_ll(
+      x = subset$xllcorner,
+      y = subset$yllcorner
+      )
     ,
     "data.frame"
   )
@@ -45,6 +48,12 @@ test_that("test coordinate transforms",{
               ncols = x['ncols'])
     })
   )
+
+  # # internal reprojection
+  # expect_type(
+  #   mt_to_terra(subset, reproject = TRUE),
+  #   "S4"
+  # )
 })
 
 # test raster conversions
