@@ -6,6 +6,14 @@
 #' @param df a valid MODISTools data frame with a single band (filter for a
 #' particular band using the dplyr \code{filter()} function or base \code{subset()}
 #' @param reproject reproject output to lat / long (default = \code{FALSE})
+#' @param method 	character. Method used for estimating the new cell values of
+#'  a SpatRaster. One of: near: nearest neighbor. This method is fast, and it
+#'  can be the preferred method if the cell values represent classes. It is not
+#'  a good choice for continuous values. This is used by default if the first
+#'  layer of x is categorical. bilinear: bilinear interpolation. This is the
+#'  default if the first layer of x is numeric (not categorical). cubic: cubic
+#'  interpolation. cubicspline: cubic spline interpolation.
+#'
 #' @return A terra SpatRaster populated with the tidy dataframe values
 #' @seealso \code{\link[MODISTools]{mt_subset}}
 #' \code{\link[MODISTools]{mt_batch_subset}}
@@ -37,7 +45,8 @@
 
 mt_to_terra <- function(
   df,
-  reproject = FALSE
+  reproject = FALSE,
+  method = "bilinear"
   ){
 
   # trap empty function
@@ -60,6 +69,14 @@ mt_to_terra <- function(
   # ask for a subset with a single band
   if(length(unique(df$band)) != 1){
     stop("Multiple bands in data frame, filter for a single band first!")
+  }
+
+  # don't allow reprojections if there is only one pixel
+  if(df$ncol[1] == 1 & df$nrow[1] == 1){
+    stop(
+      "Only a single pixel location is provided (extent of 1x1),
+       convert coordinates using {sf}"
+      )
   }
 
   # find unique dates for which data should exist
@@ -108,7 +125,8 @@ mt_to_terra <- function(
   if(reproject){
     r <- terra::project(
       r,
-      "EPSG:4326"
+      "EPSG:4326",
+      method = method
       )
   }
 
