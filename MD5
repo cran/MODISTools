@@ -1,5 +1,5 @@
-19cb2ccc96d3a6c816224e4e64f55b93 *DESCRIPTION
-2bb24fe49a44ee7dd543f543e57c42aa *NAMESPACE
+5f08771988a821c35d178595e844b8bf *DESCRIPTION
+92238244429f3c9f06bc444ff786a158 *NAMESPACE
 98a495916fce0439446f1cd247cf26b8 *R/coordinate_conversion.R
 52daeb2acb218840e4ee6c91e54ef429 *R/data.R
 3f44ad33d8e6b518a63d327b79338fec *R/mt_bands.R
@@ -8,15 +8,15 @@ c94a9896d725a1c86749d8cf6aba20f8 *R/mt_batch_subset.R
 47121ce6bd5958b8977b383728987af3 *R/mt_products.R
 7a52a7d8c92f0cbb295fc458f3dbfe30 *R/mt_sites.R
 aad40e19cb4ed517122d31c28ba9e728 *R/mt_subset.R
-2010f3ed733690860d72a6aeb43cdc79 *R/mt_to_terra.R
+1758543ce1757a390a5502599f291ec3 *R/mt_to_terra.R
 4c23f39b61fcfd07bc19b7d54dd98218 *R/zzz.R
-066ca7facbe6de4e6bccfafa0c78d6ae *build/vignette.rds
+f7c77e1fc5ef562201080e004ad447fc *build/vignette.rds
 2635f4c72ae2125e7f20a4641cf9f4f1 *data/arcachon_lai.rda
 e7f93d11c7de2fb818dc34f3e0e8d044 *data/arcachon_lc.rda
 000d19ea879b550ed07eac6920e6ac26 *inst/CITATION
-d513841b9548273482f3565729801f24 *inst/doc/modistools-vignette.R
-eff5748c273382da2be32a7a8e7e4f09 *inst/doc/modistools-vignette.Rmd
-cb8db9189e6941c55591789b2bcfe3a6 *inst/doc/modistools-vignette.html
+84881231817333ac3ab0a6fed52918ca *inst/doc/modistools-vignette.R
+4b47766e5ad7535222f9e94ddd863b88 *inst/doc/modistools-vignette.Rmd
+e138b95f933e7637abe52197876bd890 *inst/doc/modistools-vignette.html
 1e7fc41893998e8f2769ec1ee5c96d1f *man/arcachon_lai.Rd
 9cedc8f3a4180c515e1f93652d9ad456 *man/arcachon_lc.Rd
 f5b2e5713b629755e298bb81effa47e9 *man/mt_bands.Rd
@@ -32,4 +32,4 @@ fb5ece9d9b48834c166040b643153c01 *tests/testthat.R
 e403353c76091caa729dbc394b68d854 *tests/testthat/test_coordinate_conversions.R
 6c09bbceea2f5b97c97a57e658484417 *tests/testthat/test_download_functions.R
 e993153d3ae3ed8bcd875011bb10da6e *tests/testthat/test_server_errors.R
-eff5748c273382da2be32a7a8e7e4f09 *vignettes/modistools-vignette.Rmd
+4b47766e5ad7535222f9e94ddd863b88 *vignettes/modistools-vignette.Rmd

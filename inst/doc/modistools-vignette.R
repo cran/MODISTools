@@ -30,34 +30,34 @@ dates <- mt_dates(product = "MOD13Q1", lat = 42, lon = -110)
 head(dates)
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  # download the MODIS land cover (IGBP) and NDVI data
-#  # for a region around the French city and basin of Arcachon
-#  arcachon_lai <- mt_subset(product = "MOD15A2H",
-#                      lat = 44.656286,
-#                      lon =  -1.174748,
-#                      band = "Lai_500m",
-#                      start = "2004-01-01",
-#                      end = "2004-12-30",
-#                      km_lr = 20,
-#                      km_ab = 20,
-#                      site_name = "arcachon",
-#                      internal = TRUE,
-#                      progress = FALSE
-#                      )
-#  
-#  arcachon_lc <- mt_subset(
-#    product = "MCD12Q1",
-#    lat = 44.656286,
-#    lon =  -1.174748,
-#    band = "LC_Type1",
-#    start = "2004-01-01",
-#    end = "2004-3-20",
-#    km_lr = 20,
-#    km_ab = 20,
-#    site_name = "arcachon",
-#    internal = TRUE,
-#    progress = FALSE
-#    )
+# # download the MODIS land cover (IGBP) and NDVI data
+# # for a region around the French city and basin of Arcachon
+# arcachon_lai <- mt_subset(product = "MOD15A2H",
+#                     lat = 44.656286,
+#                     lon =  -1.174748,
+#                     band = "Lai_500m",
+#                     start = "2004-01-01",
+#                     end = "2004-12-30",
+#                     km_lr = 20,
+#                     km_ab = 20,
+#                     site_name = "arcachon",
+#                     internal = TRUE,
+#                     progress = FALSE
+#                     )
+# 
+# arcachon_lc <- mt_subset(
+#   product = "MCD12Q1",
+#   lat = 44.656286,
+#   lon =  -1.174748,
+#   band = "LC_Type1",
+#   start = "2004-01-01",
+#   end = "2004-3-20",
+#   km_lr = 20,
+#   km_ab = 20,
+#   site_name = "arcachon",
+#   internal = TRUE,
+#   progress = FALSE
+#   )
 
 ## -----------------------------------------------------------------------------
 head(arcachon_lai)
@@ -74,15 +74,15 @@ df$lon <- -110
 head(df)
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  # test batch download
-#  subsets <- mt_batch_subset(df = df,
-#                       product = "MOD13Q1",
-#                       band = "250m_16_days_NDVI",
-#                       km_lr = 1,
-#                       km_ab = 1,
-#                       start = "2004-01-01",
-#                       end = "2004-12-30",
-#                       internal = TRUE)
+# # test batch download
+# subsets <- mt_batch_subset(df = df,
+#                      product = "MOD13Q1",
+#                      band = "250m_16_days_NDVI",
+#                      km_lr = 1,
+#                      km_ab = 1,
+#                      start = "2004-01-01",
+#                      end = "2004-12-30",
+#                      internal = TRUE)
 
 ## -----------------------------------------------------------------------------
 # merge land cover and lai data
